@@ -81,8 +81,7 @@
      font-size: 1rem;                       /* 字体大小 */
      font-weight: bold;                     /* 粗体 */
      transition: background-color 0.3s ease, transform 0.1s ease; /* 过渡效果 */
-     /* 确保按钮文本颜色在不同背景下可读 */
-     color: var(--text-on-primary); /* 默认白色，适合彩色背景 */
+     color: var(--text-on-primary);         /* 默认白色，适合彩色背景 */
 }
 /* 按钮激活状态 */
 .quiz-container button:active {
@@ -314,9 +313,10 @@
 
 /* 选项按钮内的平假名文本 */
 .option-button .hiragana-text {
-    font-size: 1.5rem;                      /* 平假名较大字体 */
+    font-size: 1.5rem;                     /* 平假名较大字体 */
     font-weight: 700;                      /* 字体加粗 */
     margin-bottom: 5px;                    /* 与下方罗马音的间距 */
+    color: var(--text-color);              /* 确保文本颜色可见 */
 }
 
 /* 选项按钮内的罗马音文本 */
@@ -360,7 +360,7 @@
 .option-button.correct {
     background-color: var(--color-success-light) !important; /* 成功绿色背景 */
     border-color: var(--color-success) !important;
-    color: var(--text-color) !important; /* 确保可读性 */
+    color: var(--color-success-dark) !important; /* 确保可读性 */
     animation: pulse-correct 1s ease; /* 脉冲动画 */
 }
 
@@ -368,7 +368,7 @@
 .option-button.incorrect {
     background-color: var(--color-danger-light, #ffdde0) !important; /* 错误红色背景 */
     border-color: var(--color-danger) !important;
-    color: var(--text-color) !important; /* 确保可读性 */
+    color: var(--color-danger-dark) !important; /* 确保可读性 */
     animation: shake-incorrect 0.5s ease; /* 抖动动画 */
 }
 
@@ -376,7 +376,7 @@
 .option-button.show-correct { /* 当显示正确答案时（用户选错后） */
     background-color: rgba(40, 167, 69, 0.2) !important; /* 半透明成功绿色 */
     border-color: var(--color-success) !important;
-    color: var(--text-color) !important; /* 确保可读性 */
+    color: var(--color-success-dark) !important; /* 确保可读性 */
     box-shadow: 0 0 8px var(--color-success) !important; /* 醒目阴影 */
     animation: pulse-highlight 2s infinite !important; /* 持续呼吸效果凸显正确答案 */
 }
@@ -384,15 +384,18 @@
 /* 暗黑模式下调整动画颜色和效果 */
 [data-theme="dark"] .option-button.correct {
     background-color: var(--color-success-dark) !important;
+    color: #ffffff !important; /* 暗模式下使用白色文本 */
 }
 
 [data-theme="dark"] .option-button.incorrect {
     background-color: #3a1d1f !important; /* 深红色背景 */
+    color: #ffffff !important; /* 暗模式下使用白色文本 */
 }
 
 [data-theme="dark"] .option-button.show-correct {
     background-color: rgba(40, 167, 69, 0.3) !important;
     box-shadow: 0 0 8px rgba(40, 167, 69, 0.6) !important;
+    color: #ffffff !important; /* 暗模式下使用白色文本 */
 }
 
 /* --- 动画定义 --- */
@@ -449,7 +452,7 @@
 }
 #stop-quiz-button { /* 结束挑战按钮 */
     background-color: var(--color-warning); /* 警告色 (黄色) */
-    color: var(--text-color);             /* 主要文本色 (确保在黄色上可读) */
+    color: #212529;                        /* 深色文本确保在黄色背景上可见 */
     padding: 10px 20px;                   /* 内边距调整 */
 }
 #stop-quiz-button:hover:not(:disabled) {
@@ -640,4 +643,26 @@
          /* margin-left: calc(110px + var(--spacing-sm)); */ /* 自动对齐可能更好 */
          margin-left: var(--spacing-sm); /* 简单间距 */
      }
+}
+
+/* 选项按钮内的文本在各种状态下颜色应一致 */
+.option-button.correct .hiragana-text,
+.option-button.incorrect .hiragana-text,
+.option-button.show-correct .hiragana-text {
+    color: inherit; /* 继承按钮的颜色设置 */
+}
+
+.option-button.correct .romaji-text,
+.option-button.incorrect .romaji-text,
+.option-button.show-correct .romaji-text {
+    color: inherit; /* 继承按钮的颜色设置 */
+    opacity: 1; /* 确保可见 */
+}
+
+[data-theme="dark"] .option-button .hiragana-text {
+    color: var(--text-color); /* 确保暗黑模式下文本可见 */
+}
+
+[data-theme="dark"] .option-button .romaji-text {
+    color: var(--text-color-muted); /* 暗黑模式下罗马音颜色 */
 }
