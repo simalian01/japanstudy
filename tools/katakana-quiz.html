@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>片假名测试 - 西马利安的日语学习小站</title> <!-- 页面标题 -->
+
+    <!-- Web Font (与 index.html 保持一致) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- 引入主样式表 (路径相对于本文件) -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- 引入此页面专用样式表 (路径相对于本文件) -->
+    <link rel="stylesheet" href="../assets/css/katakana-quiz.css">
+
+</head>
+<body>
+
+    <!-- === 网站通用页眉 开始 === -->
+    <header class="site-header">
+        <div class="site-header-content">
+            <div class="site-branding">西马利安的日语学习小站</div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html">新标日语学习</a></li>
+                    <li><a href="katakana-quiz.html" class="active">片假名测试</a></li> <!-- 当前页面设为活动链接 -->
+                    <li><a href="#" class="disabled">关于本站 <span class="dev-note">(开发中)</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <!-- === 网站通用页眉 结束 === -->
+
+    <!-- === 页面主要内容包装器 开始 === -->
+    <div class="page-wrapper">
+
+        <!-- === 片假名测试内容容器 开始 === -->
+        <!-- 使用 .quiz-container 作为主容器，与 CSS 和 JS 对应 -->
+        <div class="quiz-container">
+            <h1>日语片假名快速记忆挑战</h1>
+
+            <!-- === 设置区域 === -->
+            <div id="settings-area">
+                 <h3>游戏设置</h3>
+                 <!-- 答题时间设置 -->
+                 <div class="setting-group">
+                     <label for="timer-duration">每题时限:</label>
+                     <select id="timer-duration" title="选择每道题的回答时间限制">
+                         <option value="3">3秒</option>
+                         <option value="4">4秒</option>
+                         <option value="5" selected>5秒 (默认)</option>
+                         <option value="6">6秒</option>
+                         <option value="7">7秒</option>
+                         <option value="8">8秒</option>
+                         <option value="10">10秒</option>
+                         <option value="15">15秒</option>
+                     </select>
+                     <span class="description">秒</span>
+                 </div>
+                 <!-- 切换模式设置 -->
+                 <div class="setting-group">
+                     <label>切换题目:</label>
+                     <span class="radio-group" title="选择回答后是自动进入下一题还是手动点击按钮">
+                        <label><input type="radio" name="next-mode" value="auto" checked> 自动</label>
+                        <label><input type="radio" name="next-mode" value="manual"> 手动</label>
+                     </span>
+                 </div>
+                 <!-- 正确后延时设置 (自动模式) -->
+                 <div class="setting-group">
+                     <label for="delay-correct">正确后延时:</label>
+                     <select id="delay-correct" title="自动模式下，回答正确后等待多久进入下一题">
+                         <option value="0.5">0.5秒</option>
+                         <option value="1">1秒</option>
+                         <option value="1.5">1.5秒</option>
+                         <option value="2" selected>2秒 (默认)</option>
+                         <option value="2.5">2.5秒</option>
+                         <option value="3">3秒</option>
+                     </select>
+                      <span class="description">(自动模式生效)</span>
+                 </div>
+                 <!-- 错误后延时设置 (自动模式) -->
+                  <div class="setting-group">
+                     <label for="delay-incorrect">错误后延时:</label>
+                     <select id="delay-incorrect" title="自动模式下，回答错误后等待多久进入下一题">
+                         <option value="1.5">1.5秒</option>
+                         <option value="2">2秒</option>
+                         <option value="2.5">2.5秒</option>
+                         <option value="3">3秒</option>
+                         <option value="4" selected>4秒 (默认)</option>
+                         <option value="5">5秒</option>
+                     </select>
+                     <span class="description">(自动模式生效)</span>
+                 </div>
+            </div>
+
+            <!-- === 模式选择区域 === -->
+            <div id="level-selection">
+                <h2>请选择挑战模式</h2>
+                <!-- 点击按钮会调用 JS 中的 startGame 函数 -->
+                <button title="测试单个片假名的平假名读音">初级 (单个假名)</button>
+                <button title="测试常用片假名词汇的平假名读音">中级 (常用词语)</button>
+            </div>
+
+            <!-- === 测验区域 (默认隐藏) === -->
+            <div id="quiz-area" class="hidden">
+                <!-- 测验头部：分数和计时器 -->
+                <div class="quiz-header">
+                    <div id="score-display" title="中级模式当前得分">分数: 0</div>
+                    <div id="timer-display" title="当前题目剩余时间"></div>
+                </div>
+                <!-- 问题显示区域 -->
+                <div id="question-display" title="请选择下方对应的平假名读音"></div>
+                <!-- 词语信息区域 (中级模式，默认隐藏) -->
+                <div id="word-info-area" class="hidden" title="当前词汇的含义与来源信息"></div>
+                <!-- 选项按钮容器 -->
+                <div id="options-container">
+                    <!-- 4 个选项按钮，内容由 JS 填充 -->
+                    <button class="option-button" title="选择此项作为答案">
+                        <span class="hiragana-text"></span> <!-- 显示平假名 -->
+                        <span class="romaji-text"></span>  <!-- 回答后显示罗马音 -->
+                    </button>
+                    <button class="option-button" title="选择此项作为答案">
+                        <span class="hiragana-text"></span>
+                        <span class="romaji-text"></span>
+                    </button>
+                    <button class="option-button" title="选择此项作为答案">
+                        <span class="hiragana-text"></span>
+                        <span class="romaji-text"></span>
+                    </button>
+                    <button class="option-button" title="选择此项作为答案">
+                        <span class="hiragana-text"></span>
+                        <span class="romaji-text"></span>
+                    </button>
+                </div>
+                <!-- 反馈信息区域 (正确/错误/超时) -->
+                <div id="feedback-area"></div>
+                <!-- 进度显示区域 (初级模式) -->
+                <div id="progress-display" title="初级模式当前进度"></div>
+                <!-- 控制按钮区域 (下一题/结束) -->
+                <div id="quiz-controls">
+                    <!-- 下一题按钮 (手动模式，默认隐藏) -->
+                    <button id="next-question-button" class="hidden" title="进入下一道题目">下一题</button>
+                    <!-- 结束挑战按钮 -->
+                    <button id="stop-quiz-button" title="提前结束本次挑战">结束挑战</button>
+                </div>
+            </div>
+
+            <!-- === 结果区域 (默认隐藏) === -->
+            <div id="result-area" class="hidden">
+                <h2>挑战结果</h2>
+                <p id="final-score"></p>         <!-- 显示最终得分或完成状态 -->
+                <p id="total-questions"></p>     <!-- 显示总题数或完成详情 -->
+                <p id="final-rating" class="hidden"></p> <!-- 显示最终评级 (中级模式) -->
+                <button title="返回模式选择界面，开始新的挑战">再玩一次</button>
+            </div>
+
+            <!-- === 历史区域 (默认显示) === -->
+            <div id="history-area">
+                 <!-- 历史记录控制 (标题和清空按钮) -->
+                 <div class="history-controls">
+                     <h2>挑战历史</h2>
+                     <button class="clear-btn" title="清空所有本地保存的挑战记录">清空历史</button>
+                 </div>
+                 <!-- 历史记录列表 -->
+                 <ul id="history-list" title="最近的挑战记录列表"></ul>
+            </div>
+        </div>
+        <!-- === 片假名测试内容容器 结束 === -->
+
+    </div>
+    <!-- === 页面主要内容包装器 结束 === -->
+
+
+    <!-- === 网站通用页脚 开始 === -->
+    <footer class="site-footer">
+        由 西马利安 (ximalian) 创建 | 日语学习工具 © 2025-2026
+    </footer>
+    <!-- === 网站通用页脚 结束 === -->
+
+    <!-- 引入此页面专用的 JavaScript (放在 body 结束前) -->
+    <!-- 使用 defer 属性确保 DOM 解析完成后再执行脚本 -->
+    <script src="../assets/js/katakana-quiz.js" defer></script>
+    
+    <!-- 网站设置脚本 -->
+    <script src="../assets/js/settings.js"></script>
+</body>
+</html>

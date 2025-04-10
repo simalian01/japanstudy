@@ -1,0 +1,917 @@
+/* === style.css (增强版) === */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+
+/* --- CSS 变量 (主题) --- */
+:root {
+    /* 字体 */
+    --font-primary: 'Noto Sans JP', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-mono: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    --font-size-base: 16px; /* 基础字体大小 - 新增 */
+
+    /* 颜色 */
+    --color-primary: #0056b3;       /* 主蓝色 */
+    --color-primary-dark: #004085;
+    --color-primary-light: #eef2f7; /* 浅蓝悬停色 */
+    --color-secondary: #6c757d;    /* 灰色 */
+    --color-accent: #17a2b8;      /* 青色强调 */
+    --color-success: #28a745;     /* 绿色 */
+    --color-warning: #ffc107;
+    --color-danger: #dc3545;
+    --color-danger-dark: #c82333;
+    --color-info: #17a2b8;
+
+    /* 文本颜色 */
+    --text-color: #343a40;
+    --text-color-light: #495057;
+    --text-color-muted: #6c757d;
+    --text-on-primary: #ffffff;
+    --text-ruby: #007bff;           /* Ruby 字符颜色 */
+    --text-disabled: #999;        /* 禁用链接颜色 */
+
+    /* 背景颜色 */
+    --bg-color: #f8f9fa;           /* 页面浅背景 */
+    --bg-card: #ffffff;            /* 卡片/内容块背景 */
+    --bg-alt: #f1f3f5;           /* 交替背景 (注释, 细节) */
+    --bg-code: #e2e3e5;             /* 代码块背景 */
+    --bg-modal-overlay: rgba(0,0,0,0.7); /* 模态框遮罩 */
+    --bg-header: #ffffff;          /* 站点页眉背景 */
+
+    /* 边框和圆角 */
+    --border-color: #dee2e6;
+    --border-color-dashed: #ced4da;
+    --border-radius: 8px;
+    --border-radius-sm: 4px;
+
+    /* 阴影 */
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 8px rgba(0,0,0,0.07);
+    --shadow-lg: 0 6px 12px rgba(0,0,0,0.1);
+
+    /* 间距 */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+
+    /* 过渡效果 */
+    --transition-speed: 0.25s;
+}
+
+/* 暗黑模式变量 - 新增 */
+[data-theme="dark"] {
+    /* 颜色 */
+    --color-primary: #4dabf7;
+    --color-primary-dark: #3793dd;
+    --color-primary-light: #1e2a38;
+    
+    /* 文本颜色 */
+    --text-color: #e9ecef;
+    --text-color-light: #ced4da;
+    --text-color-muted: #adb5bd;
+    --text-ruby: #4dabf7;
+    --text-disabled: #6c757d;
+    
+    /* 背景颜色 */
+    --bg-color: #121212;
+    --bg-card: #1e1e1e;
+    --bg-alt: #2a2a2a;
+    --bg-code: #2d3748;
+    --bg-modal-overlay: rgba(0,0,0,0.8);
+    --bg-header: #1e1e1e;
+    
+    /* 边框颜色 */
+    --border-color: #343a40;
+    --border-color-dashed: #495057;
+    
+    /* 阴影 */
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.2);
+    --shadow-md: 0 4px 8px rgba(0,0,0,0.3);
+    --shadow-lg: 0 6px 12px rgba(0,0,0,0.4);
+}
+
+/* 字体大小类 - 新增 */
+html {
+    scroll-behavior: smooth;
+    font-size: var(--font-size-base);
+}
+
+/* --- 通用样式与重置 --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-primary);
+    line-height: 1.7; /* 稍增加行高 */
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex; /* 用于页脚固定 */
+    flex-direction: column; /* 用于页脚固定 */
+    min-height: 100vh; /* 用于页脚固定 */
+}
+
+body.modal-open {
+    overflow: hidden; /* 模态框打开时禁止背景滚动 */
+}
+
+/* --- 站点页眉 (index.html) --- */
+.site-header {
+    background-color: var(--bg-header);
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    width: 100%;
+    z-index: 100; /* 确保在内容之上 */
+}
+
+.site-header-content {
+    max-width: 1100px; /* 稍微加宽页眉容器 */
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 两端对齐 */
+    flex-wrap: wrap; /* 允许换行 */
+}
+
+.site-branding {
+    font-size: 1.5em; /* 站点名称字体大小 */
+    font-weight: 700; /* 加粗 */
+    color: var(--color-primary-dark);
+    padding: var(--spacing-sm) 0; /* 垂直内边距 */
+}
+
+.main-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: var(--spacing-sm); /* 导航项间距 */
+}
+
+.main-nav li {
+    margin: 0;
+}
+
+.main-nav a {
+    display: block;
+    padding: var(--spacing-sm) var(--spacing-md);
+    text-decoration: none;
+    color: var(--text-color-light);
+    font-weight: 500;
+    border-radius: var(--border-radius-sm);
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+.main-nav a:hover {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary-dark);
+}
+
+.main-nav a.active { /* 当前活动页面链接 */
+    background-color: var(--color-primary);
+    color: var(--text-on-primary);
+    font-weight: bold;
+}
+
+.main-nav a.disabled { /* 开发中链接 */
+    color: var(--text-disabled);
+    cursor: not-allowed;
+    pointer-events: none; /* 禁用点击事件 */
+}
+
+.main-nav .dev-note { /* 开发中提示 */
+    font-size: 0.8em;
+    margin-left: var(--spacing-xs);
+    opacity: 0.8;
+}
+
+/* --- 布局容器 --- */
+.page-wrapper {
+    max-width: 950px;
+    margin: 0 auto; /* 居中容器 */
+    padding: var(--spacing-lg) var(--spacing-lg); /* 调整内边距 */
+    width: 100%;
+    flex-grow: 1; /* 使内容增长以将页脚推到底部 */
+}
+
+/* --- 页眉 / 返回链接 (课程页面) --- */
+/* 注意：这个 .page-header 类似乎没有在 lesson1.html 中使用，
+   lesson1.html 使用的是内联样式的 div。样式保持不变以防万一 */
+.page-header {
+    padding: var(--spacing-sm) 0;
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+}
+.back-link-container { /* 承载返回链接的容器 */
+    max-width: 950px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+}
+.back-link-container a {
+    text-decoration: none;
+    color: var(--color-primary);
+    font-weight: 500;
+    font-size: 0.95em;
+    transition: color var(--transition-speed);
+    display: inline-flex;
+    align-items: center;
+}
+.back-link-container a::before { /* 添加箭头 */
+    content: '«';
+    margin-right: var(--spacing-xs);
+    font-weight: bold;
+}
+.back-link-container a:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+}
+
+/* 修复课程页面顶部的内联返回链接容器在暗黑模式下的样式 */
+[data-theme="dark"] div[style*="background-color: #f8f9fa"] {
+    background-color: var(--bg-card) !important;
+    border-bottom-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] div[style*="background-color: #f8f9fa"] a[style*="color:#0056b3"] {
+    color: var(--color-primary) !important;
+}
+
+/* --- 页面标题 (h1 for index) --- */
+h1.page-title {
+    text-align: center;
+    color: var(--text-color);
+    margin-top: 0; /* 由于上方加了站点导航，减小上边距 */
+    margin-bottom: var(--spacing-xl);
+    font-weight: 700;
+    font-size: 2.0em; /* 稍微调整大小 */
+}
+
+/* --- 课程结构 --- */
+/* .lesson 类用于单个课程页面 */
+.lesson {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+.lesson-page-content { /* 课程页面的主要内容区域 */
+     padding: var(--spacing-lg);
+     background-color: var(--bg-card);
+     border: 1px solid var(--border-color);
+     border-radius: var(--border-radius);
+     margin: var(--spacing-lg) auto;
+     max-width: 950px;
+     box-shadow: var(--shadow-md);
+}
+
+.lesson h2 { /* 课程标题 */
+    font-size: 1.8em;
+    color: var(--color-primary);
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: var(--spacing-md);
+    margin-top: 0;
+    margin-bottom: var(--spacing-lg);
+    cursor: pointer;
+    transition: color var(--transition-speed);
+    display: flex;
+    align-items: baseline;
+    user-select: none;
+    font-weight: 700;
+}
+.lesson h2 ruby rt {
+     font-size: 0.5em;
+     color: var(--text-ruby);
+     opacity: 0.9;
+     margin-left: var(--spacing-xs);
+}
+.lesson h2:hover {
+    color: var(--color-primary-dark);
+}
+
+.lesson-content {
+     margin-top: var(--spacing-lg);
+     display: block; /* 内容默认可见 */
+}
+
+.lesson h3 { /* 章节标题 (基本, 会話) */
+    color: var(--text-color-light);
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+    font-size: 1.4em;
+    border-left: 4px solid var(--color-secondary);
+    padding-left: var(--spacing-md);
+    display: flex;
+    align-items: baseline;
+    font-weight: 500;
+}
+ .lesson h3 ruby rt {
+     font-size: 0.5em;
+     color: var(--text-color-muted);
+     opacity: 0.9;
+     margin-left: var(--spacing-xs);
+ }
+
+/* --- 用法提示 (如果需要的话) --- */
+.usage-hint {
+    font-size: 0.9em;
+    color: var(--text-color-muted);
+    background-color: var(--color-primary-light);
+    border: 1px solid var(--border-color);
+    border-left: 3px solid var(--color-primary);
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    border-radius: var(--border-radius-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+.usage-hint::before { /* 信息图标 */
+    content: 'ℹ️';
+    font-size: 1.2em;
+}
+
+/* --- 句子块 --- */
+.sentence-block {
+    margin-bottom: var(--spacing-lg);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--bg-card);
+    padding: var(--spacing-md) var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.original-sentence {
+    cursor: pointer;
+    padding: var(--spacing-sm) 0;
+    border-radius: var(--border-radius-sm);
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+    font-size: 1.25em;
+    color: var(--text-color);
+    line-height: 1.7;
+    position: relative; /* 用于伪元素定位 */
+    display: block; /* 确保占据整行以响应悬停 */
+    outline: none; /* 移除默认聚焦轮廓 */
+}
+.original-sentence:hover,
+.original-sentence:focus-visible { /* 添加聚焦样式 */
+     background-color: var(--color-primary-light);
+     color: var(--color-primary-dark);
+}
+/* 展开/折叠状态指示器 (使用 ARIA 属性) */
+.original-sentence::after {
+    content: '▼'; /* 折叠状态 */
+    font-size: 0.7em;
+    color: var(--text-color-muted);
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform var(--transition-speed) ease-in-out;
+}
+.original-sentence[aria-expanded="true"]::after {
+    transform: translateY(-50%) rotate(180deg); /* 展开状态 */
+    color: var(--color-primary);
+}
+
+/* --- 句子详情 (改进样式与动画) --- */
+.sentence-details {
+    /* display: none; 已移除 - 使用 max-height 动画代替 */
+    max-height: 0; /* 初始折叠 */
+    overflow: hidden;
+    margin-top: 0; /* 折叠时无上边距 */
+    padding: 0 var(--spacing-md); /* 仅水平内边距 */
+    border: none;
+    border-radius: var(--border-radius-sm);
+    background-color: var(--bg-alt); /* 使用交替背景色 */
+    opacity: 0; /* 初始隐藏 */
+    transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, padding 0.4s ease-in-out, margin-top 0.4s ease-in-out; /* 平滑过渡 */
+}
+
+.sentence-details.details-visible { /* 由 JS 添加的类 */
+    max-height: 1500px; /* 足够大的高度以容纳内容 */
+    opacity: 1;
+    padding: var(--spacing-md); /* 展开时添加垂直内边距 */
+    margin-top: var(--spacing-lg); /* 展开时添加上边距 */
+    border-top: 1px solid var(--border-color); /* 添加分隔线 */
+}
+
+/* 详情内部样式 */
+.sentence-details .reading-ruby {
+    font-size: 1.2em;
+    color: var(--color-success);
+    margin-bottom: var(--spacing-md);
+    font-weight: 500;
+    line-height: 2.1; /* 调整行高以容纳 ruby */
+}
+.sentence-details .reading-ruby ruby { ruby-position: over; }
+.sentence-details .reading-ruby rt {
+    font-size: 0.6em;
+    font-weight: normal;
+    color: var(--color-success);
+    transform: translateY(-0.1em);
+    user-select: none;
+    opacity: 0.95;
+}
+.sentence-details .translation {
+    font-size: 1.05em;
+    color: var(--text-color-light);
+    margin-bottom: var(--spacing-lg);
+    font-style: italic;
+    background-color: var(--bg-card);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    border-left: 3px solid var(--color-accent);
+}
+.sentence-details .grammar-explanation {
+    font-size: 1em;
+    background-color: var(--bg-card);
+    padding: var(--spacing-lg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+}
+.sentence-details .grammar-explanation > ul {
+    list-style-type: none;
+    padding-left: var(--spacing-sm);
+    margin: 0;
+}
+.sentence-details .grammar-explanation > ul > li {
+    margin-bottom: var(--spacing-md);
+    padding-left: var(--spacing-lg);
+    position: relative;
+    border-left: 3px solid var(--color-primary-light); /* 浅色边框 */
+    padding-top: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+    background-color: transparent;
+}
+.sentence-details .grammar-explanation > ul > li::before {
+    content: "◆";
+    color: var(--color-primary);
+    font-weight: bold;
+    display: block;
+    position: absolute;
+    left: var(--spacing-sm);
+    top: calc(var(--spacing-sm) + 3px); /* 微调对齐 */
+    font-size: 0.9em;
+}
+.sentence-details .grammar-explanation ul ul {
+    list-style-type: none;
+    padding-left: var(--spacing-md);
+    margin-top: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+.sentence-details .grammar-explanation ul ul li {
+    margin-bottom: var(--spacing-sm);
+    position: relative;
+    padding-left: var(--spacing-md);
+    border-left: none;
+    background-color: transparent;
+}
+.sentence-details .grammar-explanation ul ul li::before {
+    content: "•";
+    color: var(--color-accent);
+    font-weight: bold;
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 2px; /* 微调对齐 */
+}
+.sentence-details .grammar-explanation code {
+    background-color: var(--bg-code);
+    padding: 3px 6px;
+    border-radius: var(--border-radius-sm);
+    font-family: var(--font-mono);
+    color: var(--text-color);
+    font-size: 0.95em;
+    border: 1px solid #d1d5db;
+}
+.sentence-details .grammar-explanation strong {
+    color: var(--color-danger-dark);
+    font-weight: bold;
+}
+.grammar-ref {
+    font-weight: bold;
+    color: var(--text-on-primary);
+    background-color: var(--color-warning);
+    padding: 2px 5px;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.8em;
+    margin-left: var(--spacing-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.sentence-meaning {
+    margin-top: var(--spacing-lg);
+    font-weight: 500;
+    color: var(--color-success);
+    border-top: 1px dashed var(--border-color-dashed);
+    padding-top: var(--spacing-md);
+    font-size: 1.05em;
+}
+
+/* --- 对话特定样式 --- */
+.dialogue-speaker {
+    font-weight: bold;
+    color: var(--text-color-light);
+    margin-right: var(--spacing-sm);
+}
+.context-note {
+    font-style: italic;
+    color: var(--text-color-muted);
+    font-size: 0.95em;
+    margin: var(--spacing-lg) 0;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-left: 3px solid var(--border-color);
+    background-color: var(--bg-alt);
+    border-radius: var(--border-radius-sm);
+}
+.dialogue-block {
+    margin-bottom: var(--spacing-lg);
+}
+
+/* --- 模态框 (翻译弹窗) --- */
+.modal {
+    display: none; /* 默认隐藏 */
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0; width: 100%; height: 100%;
+    overflow-y: auto; /* 仅当内容超长时在模态框内部滚动 */
+    background-color: var(--bg-modal-overlay);
+    backdrop-filter: blur(4px);
+    opacity: 0; /* 初始隐藏用于动画 */
+    transition: opacity var(--transition-speed) ease-in-out;
+}
+.modal.modal-visible { /* 由 JS 添加的类 */
+    display: flex; /* 使用 flex 垂直居中 */
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: var(--bg-card);
+    margin: var(--spacing-lg);
+    padding: var(--spacing-xl);
+    border: none;
+    width: 90%;
+    max-width: 750px; /* 稍宽 */
+    border-radius: var(--border-radius);
+    position: relative;
+    box-shadow: var(--shadow-lg);
+    transform: scale(0.95); /* 初始稍小 */
+    transition: transform var(--transition-speed) ease-in-out;
+}
+.modal.modal-visible .modal-content {
+    transform: scale(1); /* 动画到完整大小 */
+}
+
+.modal-content h3 { /* 模态框标题 */
+    margin-top: 0;
+    color: var(--color-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    font-size: 1.5em;
+    font-weight: 500;
+}
+.modal-body {
+    line-height: 1.8;
+    max-height: 70vh; /* 增加最大高度 */
+    overflow-y: auto;
+    padding-right: var(--spacing-sm); /* 为滚动条留出空间 */
+}
+/* 模态框内容自定义滚动条 */
+.modal-body::-webkit-scrollbar { width: 8px; }
+.modal-body::-webkit-scrollbar-track { background: var(--bg-alt); border-radius: 4px; }
+.modal-body::-webkit-scrollbar-thumb { background-color: var(--border-color-dashed); border-radius: 4px; border: 2px solid var(--bg-alt); }
+.modal-body::-webkit-scrollbar-thumb:hover { background-color: var(--color-secondary); }
+
+.modal-body p {
+    margin-bottom: var(--spacing-md);
+    font-size: 1.05em;
+    color: var(--text-color);
+}
+.modal-body p strong { /* 说话人名称或强调 */
+    color: var(--color-accent);
+    display: block;
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-xs);
+    font-size: 1.1em;
+    font-weight: 500;
+}
+.modal-body .dialogue-context {
+    font-style: italic;
+    color: var(--text-color-muted);
+    font-size: 0.95em;
+    margin-bottom: var(--spacing-sm);
+    display: block;
+    padding-left: var(--spacing-md);
+    border-left: 2px solid var(--border-color);
+    background-color: var(--bg-alt);
+    padding-top: var(--spacing-xs);
+    padding-bottom: var(--spacing-xs);
+    border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+}
+.modal-close-button {
+    color: var(--text-color-muted);
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-lg);
+    font-size: 2em; /* 更大的关闭图标 */
+    font-weight: bold;
+    line-height: 1;
+    transition: color var(--transition-speed);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+}
+.modal-close-button:hover,
+.modal-close-button:focus {
+    color: var(--text-color);
+    outline: none;
+}
+
+/* --- 隐藏的翻译数据 --- */
+.lesson-translation-data { display: none; }
+
+/* --- 首页特定样式 (课程列表页) --- */
+#lessons-list-container {
+    background-color: var(--bg-card);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-xl);
+    margin-top: var(--spacing-lg); /* 与上方标题的间距 */
+}
+#lessons-list-container h2 { /* "课程列表" 标题 */
+    margin-top: 0;
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: var(--spacing-md);
+    color: var(--color-primary-dark);
+    font-size: 1.6em;
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    font-weight: 700;
+}
+#lessons-list {
+    list-style: none;
+    padding: 0;
+    column-count: 2; /* 默认两列 */
+    column-gap: var(--spacing-lg);
+}
+#lessons-list li {
+    margin-bottom: var(--spacing-md);
+    break-inside: avoid-column; /* 避免列表项在列中间断开 */
+}
+#lessons-list a {
+    text-decoration: none;
+    color: var(--color-primary);
+    font-size: 1.1em;
+    transition: all var(--transition-speed);
+    display: block;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--bg-alt);
+    border: 1px solid var(--border-color);
+    font-weight: 500;
+}
+#lessons-list a:hover {
+    color: var(--text-on-primary);
+    background-color: var(--color-primary);
+    border-color: var(--color-primary-dark);
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+@media (max-width: 700px) { /* 响应式调整：小屏幕单列显示 */
+    #lessons-list { column-count: 1; }
+    .site-header-content { justify-content: center; } /* 导航居中 */
+    .main-nav ul { flex-direction: column; align-items: center; margin-top: var(--spacing-sm); } /* 垂直导航 */
+}
+
+/* --- 页脚 --- */
+.site-footer {
+    margin-top: var(--spacing-xl); /* 确保与上方内容有间距 */
+    padding: var(--spacing-lg) var(--spacing-xl);
+    background-color: var(--bg-alt);
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    font-size: 0.9em;
+    color: var(--text-color-muted);
+    width: 100%; /* 页脚宽度为100% */
+}
+.site-footer a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+.site-footer a:hover {
+    text-decoration: underline;
+}
+
+/* --- 可访问性 --- */
+/* 为交互元素提供可见的焦点样式 */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+.original-sentence:focus-visible,
+.modal-close-button:focus-visible,
+.usage-guide-close:focus-visible { /* 添加新弹窗关闭按钮 */
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 86, 179, 0.3); /* 柔和光晕效果 */
+  border-radius: var(--border-radius-sm);
+}
+
+/* 确保在body上应用modal-open时html不滚动 */
+html.modal-open {
+  overflow: hidden;
+}
+
+/* 设置面板样式 - 新增 */
+.settings-panel {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-md);
+    z-index: 1000;
+    width: 240px;
+    transition: transform var(--transition-speed), opacity var(--transition-speed);
+    transform: translateY(100%);
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.settings-panel.visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.settings-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--color-primary);
+    color: var(--text-on-primary);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1001;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--transition-speed);
+    padding: 0;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.settings-toggle:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.settings-toggle:active {
+    transform: scale(0.95);
+    box-shadow: var(--shadow-sm);
+}
+
+.settings-heading {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 var(--spacing-md) 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: var(--spacing-sm);
+    color: var(--text-color);
+}
+
+.settings-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.settings-option label {
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
+/* 暗黑模式开关样式 */
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 24px;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.theme-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-secondary);
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.theme-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .theme-slider {
+    background-color: var(--color-primary);
+}
+
+input:checked + .theme-slider:before {
+    transform: translateX(24px);
+}
+
+/* 字体大小控制样式 */
+.font-size-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.font-size-btn {
+    background-color: var(--bg-alt);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--transition-speed);
+}
+
+.font-size-btn:hover {
+    background-color: var(--color-primary-light);
+}
+
+.font-size-value {
+    flex: 1;
+    text-align: center;
+    color: var(--text-color-light);
+    font-size: 0.9rem;
+}
+
+/* 课程页面的返回链接容器 - 新添加的样式 */
+.lesson-back-link {
+    padding: 10px 20px;
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.lesson-back-link a {
+    text-decoration: none;
+    color: var(--color-primary);
+    font-weight: bold;
+    transition: color var(--transition-speed);
+}
+
+.lesson-back-link a:hover {
+    text-decoration: underline;
+    color: var(--color-primary-dark);
+}
+
+/* 课程页面的主要内容区域 */
+.lesson-page-content {
+    padding: 20px;
+}
