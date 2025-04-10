@@ -30,17 +30,52 @@ function initSettingsPanel() {
     const increaseFontBtn = document.getElementById('increase-font');
     const fontSizeValue = document.getElementById('font-size-value');
     
-    // 改进设置面板按钮响应
+    // 检测是否为移动设备
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // 清除可能存在的事件监听器
     if (settingsToggle) {
-        // 移除可能存在的旧事件监听器
-        settingsToggle.removeEventListener('click', toggleSettingsPanel);
-        settingsToggle.removeEventListener('mousedown', toggleSettingsPanel);
-        settingsToggle.removeEventListener('touchstart', toggleSettingsPanel);
-        
-        // 使用mousedown事件提高响应速度
-        settingsToggle.addEventListener('mousedown', toggleSettingsPanel);
-        // 对于触摸设备，添加触摸事件
-        settingsToggle.addEventListener('touchstart', toggleSettingsPanel, {passive: true});
+        const oldToggle = settingsToggle.cloneNode(true);
+        settingsToggle.parentNode.replaceChild(oldToggle, settingsToggle);
+        settingsToggle = oldToggle;
+    }
+    
+    // 根据设备类型添加不同的事件监听
+    if (settingsToggle) {
+        if (isMobile) {
+            // 移动设备: 使用点击事件和更长的触摸时间
+            let touchTimer;
+            let touchStarted = false;
+            
+            // 触摸开始
+            settingsToggle.addEventListener('touchstart', function(e) {
+                touchStarted = true;
+                touchTimer = setTimeout(function() {
+                    // 长按打开设置面板
+                    toggleSettingsPanel(e);
+                    touchStarted = false;
+                }, 300); // 300ms长按时间
+            }, {passive: true});
+            
+            // 触摸结束
+            settingsToggle.addEventListener('touchend', function() {
+                if (touchTimer) {
+                    clearTimeout(touchTimer);
+                }
+                touchStarted = false;
+            }, {passive: true});
+            
+            // 普通点击 - 移动设备也支持点击，但防止闪烁
+            settingsToggle.addEventListener('click', function(e) {
+                if (!touchStarted) { // 如果不是从触摸开始的，允许点击打开
+                    toggleSettingsPanel(e);
+                }
+                e.preventDefault();
+            });
+        } else {
+            // 桌面设备: 使用点击事件
+            settingsToggle.addEventListener('click', toggleSettingsPanel);
+        }
     }
     
     // 点击面板外部区域关闭面板，使用捕获阶段
