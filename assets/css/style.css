@@ -48,16 +48,37 @@
     --shadow-md: 0 4px 6px rgba(0,0,0,0.05);
     --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
 
-    /* 间距 */
+    /* 间距 - 标准布局 */
     --spacing-xs: 0.25rem;
     --spacing-sm: 0.5rem;
     --spacing-md: 1rem;
     --spacing-lg: 1.5rem;
     --spacing-xl: 2.5rem;
+    
+    /* 行高和间距 - 标准布局 */
+    --line-height: 1.7;
+    --sentence-block-margin: 1.5rem;
+    --paragraph-margin: 1rem;
+    --list-item-margin: 0.75rem;
+    --grammar-padding: 1rem;
+    --grammar-list-padding: 1.5rem;
 
     /* 过渡效果 */
     --transition-speed: 0.3s;
     --transition-timing: ease;
+}
+
+/* 紧凑布局变量 */
+[data-layout="compact"] {
+    --line-height: 1.4;
+    --sentence-block-margin: 0.8rem;
+    --paragraph-margin: 0.6rem;
+    --list-item-margin: 0.4rem;
+    --grammar-padding: 0.6rem;
+    --grammar-list-padding: 1rem;
+    --spacing-md: 0.8rem;
+    --spacing-lg: 1.2rem;
+    --spacing-xl: 2rem;
 }
 
 /* 暗黑模式变量 - 新增 */
@@ -107,7 +128,7 @@ html {
 
 body {
     font-family: var(--font-primary);
-    line-height: 1.7; /* 稍增加行高 */
+    line-height: var(--line-height); /* 使用可变行高 */
     margin: 0;
     padding: 0;
     background-color: var(--bg-main);
@@ -191,6 +212,93 @@ body.modal-open {
     font-size: 0.8em;
     margin-left: var(--spacing-xs);
     opacity: 0.8;
+}
+
+/* --- 导航栏中的设置控件(新增) --- */
+.nav-settings-container {
+    display: flex;
+    align-items: center;
+    margin-left: var(--spacing-sm);
+    position: relative;
+}
+
+.nav-settings-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-color-light);
+    font-size: 1.2rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+.nav-settings-button:hover {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary-dark);
+}
+
+.nav-settings-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 250px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-md);
+    z-index: 1000;
+    display: none;
+}
+
+.nav-settings-dropdown.active {
+    display: block;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 布局选择器样式 */
+.layout-switch {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.layout-options {
+    display: flex;
+    margin-left: auto;
+}
+
+.layout-option {
+    padding: 4px 8px;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    font-size: 0.9em;
+    background-color: var(--bg-alt);
+    transition: all 0.2s ease;
+}
+
+.layout-option:first-child {
+    border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm);
+}
+
+.layout-option:last-child {
+    border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+}
+
+.layout-option.active {
+    background-color: var(--color-primary);
+    color: var(--text-on-primary);
+    border-color: var(--color-primary);
 }
 
 /* --- 布局容器 --- */
@@ -345,11 +453,10 @@ h1.page-title {
 
 /* --- 句子块 --- */
 .sentence-block {
-    margin-bottom: var(--spacing-lg);
-    border-radius: var(--border-radius-sm);
-    background-color: var(--bg-card);
-    padding: var(--spacing-md) var(--spacing-lg);
-    box-shadow: var(--shadow-sm);
+    position: relative;
+    margin-bottom: var(--sentence-block-margin);
+    border-bottom: 1px dashed var(--border-color-dashed);
+    padding-bottom: var(--sentence-block-margin);
 }
 
 .original-sentence {
@@ -396,110 +503,91 @@ h1.page-title {
     border-radius: var(--border-radius-sm);
     background-color: var(--bg-alt); /* 使用交替背景色 */
     opacity: 0; /* 初始隐藏 */
-    transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, padding 0.4s ease-in-out, margin-top 0.4s ease-in-out; /* 平滑过渡 */
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out, margin-top 0.3s ease-in-out; /* 稍微加快过渡时间 */
 }
 
 .sentence-details.details-visible { /* 由 JS 添加的类 */
-    max-height: 1500px; /* 足够大的高度以容纳内容 */
+    max-height: 1200px; /* 减小最大高度，加快展开完成时间 */
     opacity: 1;
     padding: var(--spacing-md); /* 展开时添加垂直内边距 */
-    margin-top: var(--spacing-lg); /* 展开时添加上边距 */
+    margin-top: var(--spacing-md); /* 减小上边距 */
     border-top: 1px solid var(--border-color); /* 添加分隔线 */
 }
 
-/* 详情内部样式 */
+/* --- 句子详情内部样式 --- */
 .sentence-details .reading-ruby {
-    font-size: 1.2em;
-    color: var(--color-success);
-    margin-bottom: var(--spacing-md);
-    font-weight: 500;
-    line-height: 2.1; /* 调整行高以容纳 ruby */
+    display: none; /* 隐藏注音句子重复 */
 }
-.sentence-details .reading-ruby ruby { ruby-position: over; }
-.sentence-details .reading-ruby rt {
-    font-size: 0.6em;
-    font-weight: normal;
-    color: var(--color-success);
-    transform: translateY(-0.1em);
-    user-select: none;
-    opacity: 0.95;
-}
+
 .sentence-details .translation {
-    font-size: 1.05em;
-    color: var(--text-color-light);
-    margin-bottom: var(--spacing-lg);
-    font-style: italic;
-    background-color: var(--bg-card);
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--border-radius-sm);
-    border-left: 3px solid var(--color-accent);
+    display: none; /* 隐藏中文翻译 */
 }
+
+/* 调整组成解释部分，使其直接显示在顶部 */
 .sentence-details .grammar-explanation {
-    font-size: 1em;
-    background-color: var(--bg-card);
-    padding: var(--spacing-lg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-sm);
+    margin-top: 0; /* 移除上边距，因为前面的元素已经隐藏 */
+    border-top: none; /* 移除上边框 */
+    padding: var(--spacing-sm) var(--spacing-md); /* 减小内边距 */
+    font-size: 0.95em; /* 稍微减小字体大小 */
 }
-.sentence-details .grammar-explanation > ul {
-    list-style-type: none;
-    padding-left: var(--spacing-sm);
-    margin: 0;
+
+.sentence-details .grammar-explanation ul {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem; /* 减小列表缩进 */
 }
-.sentence-details .grammar-explanation > ul > li {
-    margin-bottom: var(--spacing-md);
-    padding-left: var(--spacing-lg);
-    position: relative;
-    border-left: 3px solid var(--color-primary-light); /* 浅色边框 */
-    padding-top: var(--spacing-sm);
-    padding-bottom: var(--spacing-sm);
-    background-color: transparent;
+
+.sentence-details .grammar-explanation ul li {
+    margin-bottom: 0.4rem; /* 减小列表项间距 */
 }
-.sentence-details .grammar-explanation > ul > li::before {
-    content: "◆";
-    color: var(--color-primary);
-    font-weight: bold;
-    display: block;
-    position: absolute;
-    left: var(--spacing-sm);
-    top: calc(var(--spacing-sm) + 3px); /* 微调对齐 */
-    font-size: 0.9em;
-}
+
 .sentence-details .grammar-explanation ul ul {
-    list-style-type: none;
-    padding-left: var(--spacing-md);
-    margin-top: var(--spacing-sm);
-    margin-bottom: var(--spacing-sm);
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
 }
-.sentence-details .grammar-explanation ul ul li {
-    margin-bottom: var(--spacing-sm);
-    position: relative;
-    padding-left: var(--spacing-md);
-    border-left: none;
-    background-color: transparent;
-}
-.sentence-details .grammar-explanation ul ul li::before {
-    content: "•";
-    color: var(--color-accent);
-    font-weight: bold;
-    display: inline-block;
-    position: absolute;
-    left: 0;
-    top: 2px; /* 微调对齐 */
-}
-.sentence-details .grammar-explanation code {
+
+/* 改进句子意义部分的显示 */
+.sentence-details .grammar-explanation .sentence-meaning {
+    margin-top: 0.5rem;
+    margin-bottom: 0.2rem;
+    padding: 0.4rem 0.6rem;
     background-color: var(--bg-code);
-    padding: 3px 6px;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.9em;
+    color: var(--text-color-light);
+}
+
+/* 修复注音格式问题 */
+.sentence-details .grammar-explanation ruby {
+    display: inline; /* 使用inline而不是flex布局 */
+    vertical-align: baseline;
+}
+
+.sentence-details .grammar-explanation rt {
+    /* 隐藏rt标签的显示，将使用JS转换为括号注音格式 */
+    display: none;
+}
+
+/* 增加针对ruby标签的JS处理 */
+.sentence-details .grammar-explanation ruby::after {
+    content: "（" attr(data-reading) "）";
+    font-size: 0.85em;
+    color: var(--text-color-muted);
+    margin-left: 0.1em;
+    font-weight: normal; /* 确保注音不是粗体 */
+}
+
+/* 改进代码块显示 */
+.sentence-details .grammar-explanation code {
+    background-color: rgba(0,0,0,0.05);
+    padding: 0.1em 0.3em;
     border-radius: var(--border-radius-sm);
     font-family: var(--font-mono);
-    color: var(--text-color);
-    font-size: 0.95em;
-    border: 1px solid #d1d5db;
+    font-size: 0.9em;
+    display: inline-block;
+    margin: 0 0.2em;
 }
-.sentence-details .grammar-explanation strong {
-    color: var(--color-danger-dark);
-    font-weight: bold;
-}
+
 .grammar-ref {
     font-weight: bold;
     color: var(--text-on-primary);
@@ -512,12 +600,16 @@ h1.page-title {
     letter-spacing: 0.5px;
 }
 .sentence-meaning {
-    margin-top: var(--spacing-lg);
+    margin-top: var(--spacing-sm);
     font-weight: 500;
     color: var(--color-success);
     border-top: 1px dashed var(--border-color-dashed);
-    padding-top: var(--spacing-md);
-    font-size: 1.05em;
+    font-size: 0.95em; /* 更小的字体大小 */
+    background-color: var(--bg-alt); /* 修改背景色 */
+    padding: calc(var(--spacing-sm) * 0.8); /* 统一减少内边距 */
+    border-radius: var(--border-radius-sm);
+    border-left: 3px solid var(--color-success);
+    box-shadow: var(--shadow-sm); /* 添加轻微阴影增加层次感 */
 }
 
 /* --- 对话特定样式 --- */
@@ -946,4 +1038,27 @@ input:checked + .theme-slider:before {
 /* 课程页面的主要内容区域 */
 .lesson-page-content {
     padding: 20px;
+}
+
+/* 段落间距 */
+p {
+    margin-top: var(--paragraph-margin);
+    margin-bottom: var(--paragraph-margin);
+}
+
+/* 语法解释中的 ruby 特殊样式 */
+.sentence-details .grammar-explanation ruby {
+    ruby-position: over;
+    display: inline-block; /* 确保布局稳定 */
+    margin: 0 2px; /* 增加左右间距 */
+    vertical-align: text-bottom; /* 对齐底部 */
+}
+
+.sentence-details .grammar-explanation rt {
+    font-size: 0.65em;
+    line-height: 1;
+    color: var(--text-color-muted);
+    margin-bottom: 0.2em; /* 增加注音与文字的距离 */
+    text-align: center;
+    white-space: nowrap; /* 确保注音不会换行 */
 }

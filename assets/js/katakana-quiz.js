@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 更新初级模式的进度显示
         if (currentLevel === 'beginner') {
-            progressDisplay.textContent = `进度: ${questionsAnsweredInBeginner.size + 1} / ${totalBeginnerQuestions}`;
+            progressDisplay.textContent = `进度: ${questionsAnsweredInBeginner.size} / ${totalBeginnerQuestions}`;
         }
 
         // 记录问题开始时间并启动计时器
