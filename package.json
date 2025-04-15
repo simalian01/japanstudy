@@ -3,7 +3,12 @@
   "version": "1.1.0",
   "description": "西马利安的日语学习小站",
   "scripts": {
-    "build": "echo 'No build step required'"
+    "build": "echo 'No build step required'",
+    "update:lessons": "node scripts/batch-update-lessons.js",
+    "update:components": "node scripts/update-lessons-components.js",
+    "update:lessons:ps": "powershell -File .\\scripts\\update-lessons.ps1",
+    "update:components:ps": "powershell -File .\\scripts\\update-lessons-components.ps1",
+    "serve": "serve src"
   },
   "repository": {
     "type": "git",

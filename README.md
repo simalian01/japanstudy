@@ -36,6 +36,31 @@
 - 使用HTML5、CSS3和原生JavaScript开发
 - 本地存储用户偏好设置
 
+## 💻 项目结构
+
+```
+japanstudy/
+├── public/              # 存放无需处理的静态文件 (如 favicon.ico)
+├── scripts/             # 项目维护脚本 (.js, .ps1)
+├── src/                 # 所有源代码的主目录
+│   ├── pages/           # 主要 HTML 页面 (index.html)
+│   ├── lessons/         # 各课程 HTML 页面
+│   ├── tools/           # 各工具的专属文件 (HTML)
+│   ├── components/      # 可重用的 HTML 片段 (header.html, footer.html)
+│   └── assets/          # 页面引用的静态资源
+│       ├── css/         # CSS 文件
+│       ├── js/          # JavaScript 文件
+│       ├── images/      # 图片资源
+│       └── fonts/       # 字体文件
+└── dist/                # (未来) 构建输出目录
+```
+
+### 开发说明
+
+- 组件化设计：使用`component-loader.js`加载公共组件
+- 主题切换：通过`settings.js`实现暗黑模式和字体大小调整
+- 页面组织：按功能分类存放在不同目录，便于维护和扩展
+
 ## 📝 许可
 
 版权所有 © 2025-2026 西马利安 

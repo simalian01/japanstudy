@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新标日语学习 - 西马利安的日语学习小站</title> <!-- 网站主标题 -->
+    <!-- Web Font (保持字体一致性) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- 主 CSS 链接 -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- 使用指南弹窗 CSS -->
+    <style>
+        /* --- 使用指南弹窗样式 --- */
+        .usage-guide-modal {
+            display: none; /* 默认隐藏 */
+            position: fixed;
+            z-index: 2000; /* 比其他可能存在的弹窗层级更高 */
+            left: 0; top: 0; width: 100%; height: 100%;
+            overflow: auto; /* 内容过多时允许滚动 */
+            background-color: rgba(0,0,0,0.6); /* 半透明黑色背景 */
+            align-items: center; /* 垂直居中 */
+            justify-content: center; /* 水平居中 */
+            backdrop-filter: blur(3px); /* 背景模糊效果 */
+        }
+        .usage-guide-modal.modal-visible {
+            display: flex; /* 显示时使用 flex 布局居中 */
+        }
+        .usage-guide-content {
+            background-color: var(--bg-card, #fff); /* 使用变量，提供默认值 */
+            margin: auto;
+            padding: 30px;
+            border-radius: var(--border-radius, 8px); /* 使用变量 */
+            width: 90%;
+            max-width: 550px;
+            position: relative;
+            box-shadow: var(--shadow-lg, 0 5px 15px rgba(0,0,0,0.2)); /* 使用变量 */
+            line-height: 1.8; /* 调整行高以便阅读 */
+            font-size: 1.1em; /* 增大字体 */
+            color: var(--text-color, #333); /* 使用变量 */
+        }
+        .usage-guide-content h3 {
+             margin-top: 0;
+             color: var(--color-primary, #007bff); /* 使用变量 */
+             border-bottom: 1px solid var(--border-color, #eee); /* 使用变量 */
+             padding-bottom: 15px;
+             margin-bottom: 20px;
+             font-size: 1.6em; /* 增大标题 */
+             font-weight: 700;
+        }
+         .usage-guide-content ul {
+             padding-left: 25px; /* 列表缩进 */
+             margin-bottom: 25px;
+         }
+          .usage-guide-content li {
+              margin-bottom: 10px; /* 列表项间距 */
+          }
+           .usage-guide-content code { /* 代码/按键样式 */
+                background-color: var(--bg-code, #f0f0f0); /* 使用变量 */
+                padding: 2px 5px;
+                border-radius: 4px;
+                font-family: var(--font-mono, monospace); /* 使用变量 */
+                font-size: 0.95em;
+                color: var(--color-accent, #17a2b8); /* 使用变量 */
+           }
+        .usage-guide-close { /* 关闭按钮 */
+            color: var(--text-color-muted, #aaa); /* 使用变量 */
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            line-height: 1;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .usage-guide-close:hover,
+        .usage-guide-close:focus {
+            color: var(--text-color, #333); /* 使用变量 */
+            text-decoration: none;
+            outline: none;
+        }
+         .usage-guide-button-container { /* 按钮容器 */
+             text-align: right; /* 按钮右对齐 */
+             margin-top: 20px;
+         }
+         .usage-guide-button { /* 确认按钮 */
+             background-color: var(--color-primary, #007bff); /* 使用变量 */
+             color: var(--text-on-primary, white); /* 使用变量 */
+             padding: 10px 20px;
+             border: none;
+             border-radius: var(--border-radius-sm, 5px); /* 使用变量 */
+             cursor: pointer;
+             font-size: 1em;
+             font-weight: 500;
+             transition: background-color 0.2s;
+         }
+         .usage-guide-button:hover {
+             background-color: var(--color-primary-dark, #0056b3); /* 使用变量 */
+         }
+    </style>
+</head>
+<body>
+
+    <header id="main-header"></header>
+
+    <!-- 页面主要内容容器 -->
+    <div class="page-wrapper">
+        <main>
+            <!-- 课程列表容器 -->
+            <div id="lessons-list-container">
+                <h1 class="page-title">新标日语学习内容 (共 28 课)</h1>
+                <h2>课程列表</h2>
+                <ul id="lessons-list">
+                    <!-- 课程链接 -->
+                    <li><a href="../lessons/lesson1.html">第1課 李さんは中国人です</a></li>
+                    <li><a href="../lessons/lesson2.html">第2課 これは本です</a></li>
+                    <li><a href="../lessons/lesson3.html">第3課 ここは デパートです</a></li>
+                    <li><a href="../lessons/lesson4.html">第4課 部屋に机といすが あります</a></li>
+                    <li><a href="../lessons/lesson5.html">第5課 森さんは７時に起きます</a></li>
+                    <li><a href="../lessons/lesson6.html">第6課 吉田さんは 来月 中国へ 行きます</a></li>
+                    <li><a href="../lessons/lesson7.html">第7課 李さんは 毎日 コーヒーを 飲みます</a></li>
+                    <li><a href="../lessons/lesson8.html">第8課 李さんは 日本語で 手紙を 書きます</a></li>
+                    <li><a href="../lessons/lesson9.html">第9課 四川料理は 辛いです</a></li>
+                    <li><a href="../lessons/lesson10.html">第10課 京都の 紅葉は 有名です</a></li>
+                    <li><a href="../lessons/lesson11.html">第11課 小野さんは 歌が 好きです</a></li>
+                    <li><a href="../lessons/lesson12.html">第12課  李さんは 森さんより 若いです</a></li>
+                    <li><a href="../lessons/lesson13.html">第13課 机の上に 本が 3冊 あります</a></li>
+                    <li><a href="../lessons/lesson14.html">第14課 昨日 デパートへ 行って、買い物しました</a></li>
+                    <li><a href="../lessons/lesson15.html">第15課 小野さんは 今 新聞を 読んで います</a></li>
+                    <li><a href="../lessons/lesson16.html">第16課 ホテルの 部屋は 広くて 明るいです</a></li>
+                    <li><a href="../lessons/lesson17.html">第17課 わたしは 新しい 洋服が 欲しいです</a></li>
+                    <li><a href="../lessons/lesson18.html">第18課 携帯電話は とても 小さくなりました</a></li>
+                    <li><a href="../lessons/lesson19.html">第19課 部屋の かぎを 忘れないでください</a></li>
+                    <li><a href="../lessons/lesson20.html">第20課 スミスさんは ピアノを 弾くことが できます</a></li>
+                    <li><a href="../lessons/lesson21.html">第21課 わたしは すき焼きを 食べた ことが あります</a></li>
+                    <li><a href="../lessons/lesson22.html">第22課 森さんは 毎晩 テレビを 見る</a></li>
+                    <li><a href="../lessons/lesson23.html">第23課 小野さんは 休みの 日，散歩したり 買い物に 行ったり します</a></li>
+                    <li><a href="../lessons/lesson24.html">第24課 李さんは もう すぐ 来ると 思います</a></li>
+                    <li><a href="../lessons/lesson25.html">第25課 これは明日会議で使う資料です</a></li>
+                    <li><a href="../lessons/lesson26.html">第26課  自転車に2人で乗るのは危ないです</a></li>
+                    <li><a href="../lessons/lesson27.html">第27課 子供の時、大きな地震がありました</a></li>
+                    <li><a href="../lessons/lesson28.html">第28課 馬さんはわたしに地図をくれました</a></li>
+                </ul>
+            </div>
+        </main>
+    </div> <!-- End page-wrapper -->
+
+    <footer id="main-footer"></footer>
+
+    <!-- 旧控件已移除 -->
+
+    <!-- 使用指南弹窗 HTML -->
+    <div id="usage-guide-modal" class="usage-guide-modal">
+        <div class="usage-guide-content">
+            <span id="usage-guide-close" class="usage-guide-close" title="关闭">×</span>
+            <h3>欢迎来到西马利安的日语学习小站！</h3>
+            <p>快速使用指南：</p>
+            <ul>
+                <li>点击上方的新标日语模块中进入具体课文学习页面。</li>
+                <li>在课程页面：
+                    <ul>
+                        <li>点击任意句子可以展开或折叠其详细解释（包含读音、中文翻译和语法说明）。</li>
+                        <li>点击课程标题（例如：<ruby>第1課<rt>だいいっか</rt></ruby>）可以快速预览该课所有句子的中文翻译。</li>
+                    </ul>
+                </li>
+                 <li>在课程页面，可以通过页面顶部的 "« 返回课程列表" 链接快速回到本页。</li>
+                 <li>本使用指南仅在您首次访问本模块时自动显示。</li>
+                 <li>在 <a href="../tools/katakana-quiz.html" style="color: var(--color-primary); text-decoration: underline;">片假名测试</a> 模块中，您可以进行假名或词汇的记忆挑战。</li>
+            </ul>
+            <div class="usage-guide-button-container">
+                 <button id="usage-guide-ok-button" class="usage-guide-button">我知道了</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 用于首次访问弹窗的 JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const usageGuideModal = document.getElementById('usage-guide-modal');
+            const closeButton = document.getElementById('usage-guide-close');
+            const okButton = document.getElementById('usage-guide-ok-button');
+            // 使用更具体的 key 防止与其他模块冲突
+            const storageKey = 'usageGuideShown_shinNihongoHome';
+
+            // 检查本地存储中是否已有标记
+            const guideShown = localStorage.getItem(storageKey);
+
+            if (!guideShown && usageGuideModal) {
+                // 如果从未显示过，则显示弹窗
+                usageGuideModal.classList.add('modal-visible');
+                document.body.style.overflow = 'hidden'; // 禁止背景滚动
+            }
+
+            // 关闭弹窗的函数
+            const closeGuideModal = () => {
+                if (usageGuideModal && usageGuideModal.classList.contains('modal-visible')) {
+                    usageGuideModal.classList.remove('modal-visible');
+                    // 设置标记，表示已显示过
+                    localStorage.setItem(storageKey, 'true');
+                    document.body.style.overflow = ''; // 恢复背景滚动
+                }
+            };
+
+            // 为关闭按钮和确定按钮添加事件监听器
+            if (closeButton) {
+                closeButton.addEventListener('click', closeGuideModal);
+            }
+             if (okButton) {
+                 okButton.addEventListener('click', closeGuideModal);
+             }
+
+            // 点击弹窗外部区域也可关闭
+            if (usageGuideModal) {
+                usageGuideModal.addEventListener('click', (event) => {
+                    // 确保点击的是蒙层本身，而不是内容区域
+                    if (event.target === usageGuideModal) {
+                        closeGuideModal();
+                    }
+                });
+            }
+             // 按下 Escape 键关闭弹窗
+             document.addEventListener('keydown', (event) => {
+                 // 检查弹窗是否可见且按下了 Escape 键
+                 if (event.key === "Escape" && usageGuideModal && usageGuideModal.classList.contains('modal-visible')) {
+                     closeGuideModal();
+                 }
+             });
+        });
+    </script>
+
+    <!-- 网站设置控制 JavaScript -->
+    <script src="../assets/js/components.js"></script>
+    <script src="../assets/js/settings.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <!-- 组件加载器 -->
+    <script src="../assets/js/component-loader.js" defer></script>
+</body>
+</html>

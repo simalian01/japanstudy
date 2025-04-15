@@ -1,0 +1,30 @@
+<header class="site-header">
+    <div class="site-header-content">
+        <div class="site-branding">西马利安的日语学习小站</div>
+        <nav class="main-nav">
+            <ul>
+                <!-- 导航链接 -->
+                <!-- 注意：这里的路径是相对于最终加载页面的，不是相对于 header.html -->
+                <!-- 这意味着需要 JS 来动态调整，或者部署后使用绝对路径 -->
+                <!-- 暂时保留原始路径，依靠 component-loader.js 处理 -->
+                <li><a data-original-href="index.html" href="index.html">新标日语学习</a></li> 
+                <li><a data-original-href="../tools/katakana-quiz.html" href="../tools/katakana-quiz.html">片假名测试</a></li>
+                <li><a data-original-href="#" href="#" class="disabled">关于本站 <span class="dev-note">(开发中)</span></a></li>
+            </ul>
+        </nav>
+        <!-- 新增：页眉设置控件区域 -->
+        <div class="header-settings-controls">
+            <!-- 主题切换按钮 -->
+            <button id="header-theme-toggle" class="control-button theme-toggle-button" title="切换亮色/暗色模式">
+                <span class="icon-sun">☀️</span>
+                <span class="icon-moon">🌙</span>
+            </button>
+            <!-- 字体大小控件 -->
+            <div class="font-size-controls-header">
+                <button id="header-decrease-font" class="control-button font-size-button" aria-label="减小字体">A-</button>
+                <span id="header-font-size-value" class="font-size-display">100%</span>
+                <button id="header-increase-font" class="control-button font-size-button" aria-label="增大字体">A+</button>
+            </div>
+        </div>
+    </div>
+</header> 
